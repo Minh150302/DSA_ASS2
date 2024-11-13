@@ -167,15 +167,25 @@ Heap<T>::Heap(
         int (*comparator)(T&, T&), 
         void (*deleteUserData)(Heap<T>* ) ){
     //YOUR CODE IS HERE
+	this->elements = new T[10];
+	this->capacity = 10;
+	this->count = 0;
+	this->comparator = comparator;
+	this->deleteUserData = deleteUserData;
+	
 }
 template<class T>
 Heap<T>::Heap(const Heap<T>& heap){
     //YOUR CODE IS HERE
+	copyFrom(heap);
 }
 
 template<class T>
 Heap<T>& Heap<T>::operator=(const Heap<T>& heap){
     //YOUR CODE IS HERE
+	removeInternalData();
+	copyFrom(heap);
+	
     return *this;
 }
 
@@ -183,11 +193,17 @@ Heap<T>& Heap<T>::operator=(const Heap<T>& heap){
 template<class T>
 Heap<T>::~Heap(){
     //YOUR CODE IS HERE
+	removeInternalData();
 }
 
 template<class T>
 void Heap<T>::push(T item){ //item  = 25
     //YOUR CODE IS HERE
+	ensureCapacity(count+1);
+	elements[count] = item;
+	reheapUp(count);
+	
+	count++;
 }
 /*
       18
@@ -208,6 +224,16 @@ void Heap<T>::push(T item){ //item  = 25
 template<class T>
 T Heap<T>::pop(){
     //YOUR CODE IS HERE
+	if(heap.empty())
+		throw std::underflow_error("Calling to peek with the empty heap.").
+	
+	T RetValue = elements[0];
+	
+	swap(elements[0],elements[count-1]);
+	reheapDown(0);
+	
+	count--;
+	return RetValue;
 }
 
 /*
@@ -224,37 +250,62 @@ T Heap<T>::pop(){
 template<class T>
 const T Heap<T>::peek(){
     //YOUR CODE IS HERE
+	if(heap.empty())
+		throw std::underflow_error("Calling to peek with the empty heap.").
+	return elements[0];
 }
 
 
 template<class T>
 void Heap<T>::remove(T item, void (*removeItemData)(T)){
     //YOUR CODE IS HERE
+	int index = this->getItem(item);
+	if(index == -1)
+		return;
+	
+	// int RetValue = elements[index];
+	swap(elements[index],elements[count-1]);
+	
+	count--;
+	reheapDown(index);
+	
+	if(removeItemData != 0)
+		removeItemData(elements[index]);
 }
 
 template<class T>
 bool Heap<T>::contains(T item){
     //YOUR CODE IS HERE
+	return this->getItem(item) != -1;
 }
 
 template<class T>
 int Heap<T>::size(){
     //YOUR CODE IS HERE
+	return count;
 }
 
 template<class T>
 void Heap<T>::heapify(T array[], int size){
     //YOUR CODE IS HERE
+	for(int i = 0; i < count; i++)
+		push(elements[i]);
 }
 
 template<class T>
 void Heap<T>::clear(){
     //YOUR CODE IS HERE
+	removeInternalData();
+	
+	capacity = 10;
+	count = 0;
+	elements = new T[capacity];
 }
 
 template<class T>
 bool Heap<T>::empty(){
     //YOUR CODE IS HERE
+	return count == 0;
 }
 
 template<class T>
