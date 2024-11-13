@@ -224,8 +224,8 @@ void Heap<T>::push(T item){ //item  = 25
 template<class T>
 T Heap<T>::pop(){
     //YOUR CODE IS HERE
-	if(heap.empty())
-		throw std::underflow_error("Calling to peek with the empty heap.").
+	if(this->empty())
+		throw std::underflow_error("Calling to peek with the empty heap.");
 	
 	T RetValue = elements[0];
 	
@@ -252,8 +252,8 @@ T Heap<T>::pop(){
 template<class T>
 const T Heap<T>::peek(){
     //YOUR CODE IS HERE
-	if(heap.empty())
-		throw std::underflow_error("Calling to peek with the empty heap.").
+	if(this->empty())
+		throw std::underflow_error("Calling to peek with the empty heap.");
 	return elements[0];
 }
 
@@ -269,11 +269,11 @@ void Heap<T>::remove(T item, void (*removeItemData)(T)){
 	// swap(elements[index],elements[count-1]);
 	this->swap(index,count-1);
 	
+	if(removeItemData != 0)
+		removeItemData(elements[count-1]);
+	
 	count--;
 	reheapDown(index);
-	
-	if(removeItemData != 0)
-		removeItemData(elements[index]);
 }
 
 template<class T>
@@ -292,7 +292,7 @@ template<class T>
 void Heap<T>::heapify(T array[], int size){
     //YOUR CODE IS HERE
 	for(int i = 0; i < count; i++)
-		push(elements[i]);
+		push(array[i]);
 }
 
 template<class T>
@@ -367,7 +367,7 @@ void Heap<T>::reheapUp(int position){
     //YOUR CODE IS HERE
 	if(position <= 0)
 		return;
-	int parent = (postion - 1)/2;
+	int parent = (position - 1)/2;
 	
 	if(aLTb(elements[position], elements[parent]){
 		this->swap(position,parent);
@@ -379,16 +379,12 @@ template<class T>
 void Heap<T>::reheapDown(int position){
     //YOUR CODE IS HERE
 	int left = position*2 + 1;
-	int right = position*2 + 1;
+	int right = position*2 + 2;
 	int lastPosition = this->count - 1;
 	int smaller ;
-
-	// if(aLTb(elements[left], elements[right])
-		// smaller = right;
-	// else
 		
 	if(left <= lastPosition){
-		int smaller = left;
+		smaller = left;
 		
         if(right <= lastPosition){
             if(aLTb(this->elements[right], this->elements[left])) 
