@@ -291,8 +291,20 @@ int Heap<T>::size(){
 template<class T>
 void Heap<T>::heapify(T array[], int size){
     //YOUR CODE IS HERE
-	for(int i = 0; i < count; i++)
-		push(array[i]);
+	// for(int i = 0; i < count; i++)
+		// push(array[i]);
+	
+	//other way
+	this->clear();
+	
+    ensureCapacity(size);
+    count = size;
+    for (int i = 0; i < size; ++i) {
+        elements[i] = array[i];
+    }
+    for (int i = (count / 2) - 1; i >= 0; --i) {
+        reheapDown(i);
+    }
 }
 
 template<class T>
@@ -369,7 +381,7 @@ void Heap<T>::reheapUp(int position){
 		return;
 	int parent = (position - 1)/2;
 	
-	if(aLTb(elements[position], elements[parent]){
+	if(aLTb(elements[position], elements[parent])){
 		this->swap(position,parent);
 		reheapUp(parent);
 	}
