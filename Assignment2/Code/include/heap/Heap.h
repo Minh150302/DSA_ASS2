@@ -229,7 +229,9 @@ T Heap<T>::pop(){
 	
 	T RetValue = elements[0];
 	
-	swap(elements[0],elements[count-1]);
+	// swap(elements[0],elements[count-1]);
+	swap(0,count-1);
+	
 	reheapDown(0);
 	
 	count--;
@@ -264,7 +266,8 @@ void Heap<T>::remove(T item, void (*removeItemData)(T)){
 		return;
 	
 	// int RetValue = elements[index];
-	swap(elements[index],elements[count-1]);
+	// swap(elements[index],elements[count-1]);
+	this->swap(index,count-1);
 	
 	count--;
 	reheapDown(index);
@@ -362,16 +365,56 @@ void Heap<T>::swap(int a, int b){
 template<class T>
 void Heap<T>::reheapUp(int position){
     //YOUR CODE IS HERE
+	if(position <= 0)
+		return;
+	int parent = (postion - 1)/2;
+	
+	if(aLTb(elements[position], elements[parent]){
+		this->swap(position,parent);
+		reheapUp(parent);
+	}
 }
 
 template<class T>
 void Heap<T>::reheapDown(int position){
     //YOUR CODE IS HERE
+	int left = position*2 + 1;
+	int right = position*2 + 1;
+	int lastPosition = this->count - 1;
+	int smaller ;
+
+	// if(aLTb(elements[left], elements[right])
+		// smaller = right;
+	// else
+		
+	if(left <= lastPosition){
+		int smaller = left;
+		
+        if(right <= lastPosition){
+            if(aLTb(this->elements[right], this->elements[left])) 
+                smaller = right;
+        }
+
+        if(aLTb(this->elements[smaller], this->elements[position])){
+            this->swap(smaller, position);
+            reheapDown(smaller);
+        }
+    }
+	
 }
 
 template<class T>
 int Heap<T>::getItem(T item){
     //YOUR CODE IS HERE
+	int index = -1;
+	for(int i = 0; i < count; i++){
+		if(elements[i] == item){
+			index = i;
+			break;
+		}
+	}
+	return index;
+	
 }
 
 template<class T>
