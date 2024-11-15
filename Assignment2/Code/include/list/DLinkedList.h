@@ -259,9 +259,6 @@ DLinkedList<T>::DLinkedList(
 template <class T>
 DLinkedList<T>::DLinkedList(const DLinkedList<T> &list)
 {
-    this->head = new Node();
-	this->tail = new Node();
-	
 	copyFrom(list);
 }
 
@@ -314,6 +311,7 @@ void DLinkedList<T>::add(int index, T e)
 
     if(index == (count))
         tail->prev = newNode;
+	
     count += 1;
 }
 
@@ -421,8 +419,8 @@ template <class T>
 int DLinkedList<T>::indexOf(T item)
 {
     // TODO
-	Node* curr = head->next;
-	int index = 0;
+	Node* curr = head;
+	int index = -1;
 	bool found = false;
 	
 	while (curr != tail){
@@ -435,10 +433,7 @@ int DLinkedList<T>::indexOf(T item)
 		curr = curr->next;
 	}
 	
-	if(found)
-		return index;
-	else
-		return -1;
+	return index;
 	
 }
 
@@ -517,7 +512,7 @@ void DLinkedList<T>::copyFrom(const DLinkedList<T> &list)
      * Iterates through the source list and adds each element, preserving the order of the nodes.
      */
     // TODO
-	this->count = 0;
+	this->count = list.count;
     this->head->next = this->tail;
 	this->tail->next = 0;
     
